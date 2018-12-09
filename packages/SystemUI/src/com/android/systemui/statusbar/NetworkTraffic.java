@@ -84,8 +84,6 @@ public class NetworkTraffic extends TextView {
     private long mAutoHideThreshold;
     private int mUnits;
     private boolean mShowUnits;
-    private int mDarkModeFillColor;
-    private int mLightModeFillColor;
     private int mIconTint = Color.WHITE;
     private SettingsObserver mObserver;
     private Drawable mDrawable;
@@ -118,37 +116,9 @@ public class NetworkTraffic extends TextView {
         mActiveIfaceStats = new HashMap<>(4);
     }
 
-    private CustomStatusBarItem.DarkReceiver mDarkReceiver =
-            new CustomStatusBarItem.DarkReceiver() {
-        public void onDarkChanged(Rect area, float darkIntensity, int tint) {
-            mIconTint = tint;
-            setTextColor(mIconTint);
-            updateTrafficDrawableColor();
-        }
-        public void setFillColors(int darkColor, int lightColor) {
-            mDarkModeFillColor = darkColor;
-            mLightModeFillColor = lightColor;
-        }
-    };
-
-    private CustomStatusBarItem.VisibilityReceiver mVisibilityReceiver =
-            new CustomStatusBarItem.VisibilityReceiver() {
-        public void onVisibilityChanged(boolean isVisible) {
-            if (mNetworkTrafficIsVisible != isVisible) {
-                mNetworkTrafficIsVisible = isVisible;
-                updateViewState();
-            }
-        }
-    };
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-
-        CustomStatusBarItem.Manager manager =
-                CustomStatusBarItem.findManager((View) this);
-        manager.addDarkReceiver(mDarkReceiver);
-        manager.addVisibilityReceiver(mVisibilityReceiver);
 
         mContext.registerReceiver(mIntentReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -203,7 +173,7 @@ public class NetworkTraffic extends TextView {
                 // Get information for uplink ready so the line return can be added
                 StringBuilder output = new StringBuilder();
                 if (showUpstream) {
-                    output.append(formatOutput(mTxKbps));
+                    output.append("UL: " + formatOutput(mTxKbps));
                 }
 
                 // Ensure text size is where it needs to be
@@ -217,7 +187,7 @@ public class NetworkTraffic extends TextView {
 
                 // Add information for downlink if it's called for
                 if (showDownstream) {
-                    output.append(formatOutput(mRxKbps));
+                    output.append("DL: " + formatOutput(mRxKbps));
                 }
 
                 // Update view if there's anything new to show
