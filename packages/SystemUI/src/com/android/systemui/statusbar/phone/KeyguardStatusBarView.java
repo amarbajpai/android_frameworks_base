@@ -190,7 +190,6 @@ public class KeyguardStatusBarView extends RelativeLayout
                 mMultiUserSwitch.setVisibility(View.GONE);
             }
         }
-        mBatteryView.setForceShowPercent(mBatteryCharging && mShowPercentAvailable);
     }
 
     private void updateSystemIconsLayoutParams() {
@@ -350,7 +349,7 @@ public class KeyguardStatusBarView extends RelativeLayout
     public void onBatteryLevelChanged(int level, boolean pluggedIn, boolean charging) {
         if (mBatteryCharging != charging) {
             mBatteryCharging = charging;
-            updateVisibilities();
+            mBatteryView.setForceShowPercent(mBatteryCharging && mShowPercentAvailable);
         }
     }
 
