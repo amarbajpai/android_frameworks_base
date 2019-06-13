@@ -347,43 +347,7 @@ public class ThemeAccentUtils {
 
     // Switches theme accent from one to another or back to stock
     public static void updateAccents(IOverlayManager om, int userId, int accentSetting) {
-        if (accentSetting == 0) {
-            //On selecting default accent, set accent to pink if Dark Theme is being used
-            if (isUsingDarkTheme(om, userId)) {
-                try {
-                    om.setEnabled(DARK_THEMES[0],
-                        true, userId);
-                } catch (RemoteException e) {
-                    Log.w(TAG, "Can't change theme", e);
-                }
-            //On selecting default accent, set accent to deep purple if Black Theme is being used
-            } else if (isUsingBlackTheme(om, userId)) {
-                try {
-                    om.setEnabled(BLACK_THEMES[0],
-                        true, userId);
-                } catch (RemoteException e) {
-                    Log.w(TAG, "Can't change theme", e);
-                }
-            //On selecting default accent, set accent to dirty red if ShishuNights Theme is being used
-            } else if (isUsingShishuNightsTheme(om, userId)) {
-                try {
-                    om.setEnabled(SHISHUNIGHTS_THEMES[0],
-                        true, userId);
-                } catch (RemoteException e) {
-                    Log.w(TAG, "Can't change theme", e);
-                }
-            //On selecting default accent, set accent to candy red if Chocolate Theme is being used
-            } else if (isUsingChocolateTheme(om, userId)) {
-                try {
-                    om.setEnabled(CHOCOLATE_THEMES[0],
-                        true, userId);
-                } catch (RemoteException e) {
-                    Log.w(TAG, "Can't change theme", e);
-                }
-            } else {
-                unloadAccents(om, userId);
-            }
-        } else if ((accentSetting < 20) || (accentSetting > 21)) {
+        if ((accentSetting < 20) || (accentSetting > 21)) {
             try {
                 om.setEnabled(ACCENTS[accentSetting],
                         true, userId);
